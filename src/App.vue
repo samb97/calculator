@@ -10,7 +10,7 @@ const decimalPointCap = ref(4)
     <div class="py-12 space-y-12">
       <div>
         <h1 class="text-6xl font-bold mb-4">The Calculator</h1>
-        <p>A basic number calculator built using Vue3 + TypeScript & TailwindCSS.</p>
+        <p>A basic number calculator built using Vite + Vue3 + TypeScript & TailwindCSS.</p>
       </div>
       <div class="text-left p-4 max-w-md mx-auto border border-white rounded-lg">
         <p class="font-bold">Props:</p>
