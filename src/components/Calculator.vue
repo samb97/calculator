@@ -25,11 +25,60 @@ const preText = computed(() => {
   return `${numberOne.value ?? ''} ${operand.value ?? ''} ${numberTwo.value ?? ''}`
 })
 
+function calculateAnswer(): number {
+  if (numberOne.value === null) {
+    return 0
+  }
+
+  if (numberTwo.value === null) {
+    return 0
+  }
+
+  if (operand.value === Operand.Plus) {
+    return numberOne.value + numberTwo.value
+  }
+
+  if (operand.value === Operand.Minus) {
+    return numberOne.value - numberTwo.value
+  }
+
+  if (operand.value === Operand.Divide) {
+    return numberOne.value / numberTwo.value
+  }
+
+  if (operand.value === Operand.Multiply) {
+    return numberOne.value * numberTwo.value
+  }
+
+  return 0
+}
+
+function resetNumberSelection() {
+  numberSelection.value = ''
+}
+
 function pushNumber(number: number) {
   numberSelection.value += number
 }
 
 function setOperand(_operand: Operand) {
+  if (numberSelection.value === '') {
+    return
+  }
+
+  if (numberOne.value === null) {
+    numberOne.value = Number(numberSelection.value)
+    resetNumberSelection()
+  } else if (numberTwo.value === null) {
+    numberTwo.value = Number(numberSelection.value)
+    resetNumberSelection()
+  }
+
+  if (numberOne.value !== null && numberTwo.value !== null) {
+    numberOne.value = calculateAnswer()
+    numberTwo.value = null
+  }
+
   operand.value = _operand
 }
 </script>
