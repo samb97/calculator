@@ -164,7 +164,7 @@ function finalizeCalculation() {
       <!-- Operands -->
       <div class="grid grid-cols-1">
         <CalculatorButton @click="resetCalculator">
-          C
+          c
         </CalculatorButton>
         <CalculatorButton
           v-for="operand in operands"
