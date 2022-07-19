@@ -25,6 +25,10 @@ const preText = computed(() => {
   return `${numberOne.value ?? ''} ${operand.value ?? ''} ${numberTwo.value ?? ''}`
 })
 
+function prepareNumber(num: (number | string)) {
+  return Number(Number(num).toFixed(2))
+}
+
 function calculateAnswer(): number {
   if (numberOne.value === null) {
     return 0
@@ -67,15 +71,15 @@ function setOperand(_operand: Operand) {
   }
 
   if (numberOne.value === null) {
-    numberOne.value = Number(numberSelection.value)
+    numberOne.value = prepareNumber(numberSelection.value)
     resetNumberSelection()
   } else if (numberTwo.value === null) {
-    numberTwo.value = Number(numberSelection.value)
+    numberTwo.value = prepareNumber(numberSelection.value)
     resetNumberSelection()
   }
 
   if (numberOne.value !== null && numberTwo.value !== null) {
-    numberOne.value = calculateAnswer()
+    numberOne.value = prepareNumber(calculateAnswer())
     numberTwo.value = null
   }
 
