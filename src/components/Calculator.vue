@@ -128,7 +128,7 @@ function finalizeCalculation() {
         readonly
         aria-readonly
         :value="preText"
-        class="w-full text-right"
+        class="w-full bg-gray-200 text-slate-900 p-2 text-right"
       />
     </div>
 
@@ -139,7 +139,7 @@ function finalizeCalculation() {
         readonly
         aria-readonly
         v-model="numberSelection"
-        class="w-full text-2xl font-bold p-2 text-right"
+        class="w-full bg-white text-black text-2xl font-bold p-2 text-right"
       />
     </div>
 
@@ -170,7 +170,10 @@ function finalizeCalculation() {
         >
           {{ operand }}
         </CalculatorButton>
-        <CalculatorButton @click="finalizeCalculation">
+        <CalculatorButton
+          :is-important="true"
+          @click="finalizeCalculation"
+        >
           =
         </CalculatorButton>
       </div>
@@ -178,12 +181,3 @@ function finalizeCalculation() {
 
   </div>  
 </template>
-
-<style lang="postcss" scoped>
-input {
-  @apply
-    bg-white
-    text-black
-  ;
-}
-</style>
