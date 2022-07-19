@@ -113,6 +113,10 @@ function finalizeCalculation() {
     return
   }
 
+  if (numberOne.value === null) {
+    return
+  }
+
   numberTwo.value = prepareNumber(numberSelection.value)
   numberSelection.value = String(prepareNumber(calculateAnswer()))
   isShowingAnswer.value = true
