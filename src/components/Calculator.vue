@@ -41,11 +41,9 @@ function calculateAnswer(): number {
     return 0
   }
 
-  if (numberTwo.value === null && numberSelection.value === '') {
+  if (numberTwo.value === null) {
     return 0
   }
-
-  numberTwo.value = prepareNumber(numberSelection.value)
 
   if (operand.value === Operand.Plus) {
     return numberOne.value + numberTwo.value
@@ -75,7 +73,7 @@ function resetCalculator() {
 }
 
 function resetNumberSelection() {
-  numberSelection.value = ''
+  numberSelection.value = '0'
 }
 
 function pushNumber(number: number) {
@@ -93,10 +91,6 @@ function pushNumber(number: number) {
 function setOperand(_operand: Operand) {
   isShowingAnswer.value = false
 
-  if (numberSelection.value === '') {
-    return
-  }
-
   if (numberOne.value === null) {
     numberOne.value = prepareNumber(numberSelection.value)
     resetNumberSelection()
@@ -108,12 +102,18 @@ function setOperand(_operand: Operand) {
   if (numberOne.value !== null && numberTwo.value !== null) {
     numberOne.value = prepareNumber(calculateAnswer())
     numberTwo.value = null
+    resetNumberSelection()
   }
 
   operand.value = _operand
 }
 
 function finalizeCalculation() {
+  if (isShowingAnswer.value === true) {
+    return
+  }
+
+  numberTwo.value = prepareNumber(numberSelection.value)
   numberSelection.value = String(prepareNumber(calculateAnswer()))
   isShowingAnswer.value = true
 }
@@ -159,6 +159,9 @@ function finalizeCalculation() {
 
       <!-- Operands -->
       <div class="grid grid-cols-1">
+        <CalculatorButton @click="resetCalculator">
+          C
+        </CalculatorButton>
         <CalculatorButton
           v-for="operand in operands"
           :key="`button-grid--operand-${operand}`"
