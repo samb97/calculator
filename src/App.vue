@@ -5,6 +5,6 @@ import Calculator from './components/Calculator.vue'
 <template>
   <div>
     <h1 class="text-6xl font-bold">The Calculator</h1>
-    <Calculator />
+    <Calculator :decimal-point-cap="4"/>
   </div>
 </template>

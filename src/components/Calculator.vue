@@ -3,6 +3,12 @@
 import { computed, ref } from 'vue'
 import CalculatorButton from './CalculatorButton.vue'
 
+interface Props {
+  decimalPointCap?: number
+}
+
+const { decimalPointCap = 2 } = defineProps<Props>()
+
 enum Operand {
   Plus = '+',
   Minus = '-',
@@ -26,7 +32,7 @@ const preText = computed(() => {
 })
 
 function prepareNumber(num: (number | string)) {
-  return Number(Number(num).toFixed(2))
+  return Number(Number(num).toFixed(decimalPointCap))
 }
 
 function calculateAnswer(): number {
