@@ -23,12 +23,13 @@ const operands = [
   Operand.Multiply,
 ]
 const numbers = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0]
-const numberSelection = ref<string>('')
+const numberSelection = ref<string>('0')
 const numberOne = ref<number | null>(null)
 const numberTwo = ref<number | null>(null)
 const operand = ref<Operand | null>(null)
+const isShowingAnswer = ref<boolean>(false)
 const preText = computed(() => {
-  return `${numberOne.value ?? ''} ${operand.value ?? ''} ${numberTwo.value ?? ''}`
+  return `${numberOne.value ?? ''} ${operand.value ?? ''} ${numberTwo.value ?? ''} ${isShowingAnswer.value ? '=' : ''}`
 })
 
 function prepareNumber(num: (number | string)) {
@@ -40,9 +41,11 @@ function calculateAnswer(): number {
     return 0
   }
 
-  if (numberTwo.value === null) {
+  if (numberTwo.value === null && numberSelection.value === '') {
     return 0
   }
+
+  numberTwo.value = prepareNumber(numberSelection.value)
 
   if (operand.value === Operand.Plus) {
     return numberOne.value + numberTwo.value
@@ -63,15 +66,33 @@ function calculateAnswer(): number {
   return 0
 }
 
+function resetCalculator() {
+  numberOne.value = null
+  numberTwo.value = null
+  operand.value = null
+  resetNumberSelection()
+  isShowingAnswer.value = false
+}
+
 function resetNumberSelection() {
   numberSelection.value = ''
 }
 
 function pushNumber(number: number) {
+  if (isShowingAnswer.value === true) {
+    resetCalculator()
+  }
+
+  if (numberSelection.value === '0') {
+    numberSelection.value = ''
+  }
+  
   numberSelection.value += number
 }
 
 function setOperand(_operand: Operand) {
+  isShowingAnswer.value = false
+
   if (numberSelection.value === '') {
     return
   }
@@ -91,6 +112,11 @@ function setOperand(_operand: Operand) {
 
   operand.value = _operand
 }
+
+function finalizeCalculation() {
+  numberSelection.value = String(prepareNumber(calculateAnswer()))
+  isShowingAnswer.value = true
+}
 </script>
 
 <template>
@@ -102,6 +128,7 @@ function setOperand(_operand: Operand) {
         readonly
         aria-readonly
         :value="preText"
+        class="w-full text-right"
       />
     </div>
 
@@ -112,6 +139,7 @@ function setOperand(_operand: Operand) {
         readonly
         aria-readonly
         v-model="numberSelection"
+        class="w-full text-2xl font-bold p-2 text-right"
       />
     </div>
 
@@ -138,6 +166,9 @@ function setOperand(_operand: Operand) {
           @click="setOperand(operand)"
         >
           {{ operand }}
+        </CalculatorButton>
+        <CalculatorButton @click="finalizeCalculation">
+          =
         </CalculatorButton>
       </div>
     </div>
